@@ -16,8 +16,8 @@ services:
     depends_on:
       - zipkin
 
-  hello:
-    image: paddycarey/go-echo
+  echo:
+    build: ./echo
 
   l5d64:
     image: buoyantio/linkerd:1.7.4

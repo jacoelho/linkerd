@@ -4,7 +4,10 @@ WORKDIR /app
 ADD . .
 RUN sbt assembly
 
-# FROM adoptopenjdk/openjdk16:jdk-16.0.2_7-slim
+FROM adoptopenjdk/openjdk16:jdk-16.0.2_7-slim
 
-# COPY --from=builder /app/target/scala-2.12/echo-*jar /echo.jar
-# ENTRYPOINT ["java", "-jar", "/echo.jar"]
+COPY --from=builder /app/target/scala-2.12/app-assembly-0.1.0-SNAPSHOT.jar /echo.jar
+
+EXPOSE 5050
+
+ENTRYPOINT ["java", "-jar", "/echo.jar"]
