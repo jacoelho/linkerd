@@ -1,0 +1,10 @@
+FROM hseeberger/scala-sbt:16.0.2_1.5.5_2.12.14 AS builder
+
+WORKDIR /app
+ADD . .
+RUN sbt assembly
+
+# FROM adoptopenjdk/openjdk16:jdk-16.0.2_7-slim
+
+# COPY --from=builder /app/target/scala-2.12/echo-*jar /echo.jar
+# ENTRYPOINT ["java", "-jar", "/echo.jar"]

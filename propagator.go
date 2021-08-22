@@ -40,9 +40,10 @@ func (l5d Propagator) Inject(ctx context.Context, carrier propagation.TextMapCar
 	traceID := sc.TraceID()
 
 	var buf [40]byte
-	copy64be(buf[:8], spanID[:], 0)
-	copy64be(buf[16:24], traceID[:], 8)
-	copy64be(buf[32:], traceID[:], 0)
+	copy64be(buf[:8], spanID[:])
+	// skip parent
+	copy64be(buf[16:24], traceID[8:])
+	copy64be(buf[32:], traceID[:8])
 	if sc.IsSampled() {
 		buf[31] = flagSamplingKnown | flagSampled
 	}
@@ -67,10 +68,11 @@ func (l5d Propagator) Extract(ctx context.Context, carrier propagation.TextMapCa
 	}
 
 	var scc trace.SpanContextConfig
-	copy64be(scc.SpanID[:], traceBytes, 0)
-	copy64be(scc.TraceID[8:], traceBytes, 16)
+	copy64be(scc.SpanID[:], traceBytes[:8])
+	// skip parent not supported
+	copy64be(scc.TraceID[8:], traceBytes[16:24])
 	if len(traceBytes) == 40 {
-		copy64be(scc.TraceID[:8], traceBytes, 32)
+		copy64be(scc.TraceID[:8], traceBytes[32:])
 	}
 
 	flags := traceBytes[31]
@@ -91,6 +93,6 @@ func (l5d Propagator) Fields() []string {
 	return []string{ld5ContextHeaderKey}
 }
 
-func copy64be(dst, src []byte, i int) {
-	binary.BigEndian.PutUint64(dst, binary.BigEndian.Uint64(src[i:i+8]))
+func copy64be(dst, src []byte) {
+	binary.BigEndian.PutUint64(dst, binary.BigEndian.Uint64(src))
 }

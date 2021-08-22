@@ -35,18 +35,36 @@ func TestPropagator_Extract(t *testing.T) {
 		spanID  string
 		sampled bool
 	}{
+		{
+			input:   "2XHUzfzISQKogkzqH5Xy0KiCTOoflfLQAAAAAAAAAAY=",
+			traceID: "0000000000000000a8824cea1f95f2d0",
+			spanID:  "d971d4cdfcc84902",
+			sampled: true,
+		},
+		{
+			input:   "OTTLcrtLSmDSJCjCvRLgbqiCTOoflfLQAAAAAAAAAAY=",
+			traceID: "0000000000000000a8824cea1f95f2d0",
+			spanID:  "3934cb72bb4b4a60",
+			sampled: true,
+		},
+		{
+			input:   "cCI2QdNAEByHlo11g+RYl4eWjXWD5FiXAAAAAAAAAAZhIkWbhQQgWA==",
+			traceID: "6122459b8504205887968d7583e45897",
+			spanID:  "70223641d340101c",
+			sampled: true,
+		},
 		// {
 		// 	input:   "w7oaZWDKDEgrUYn/oBOtc0EdGALJFR3tAAAAAAAAAAY=",
 		// 	traceID: "0000000000000000411d1802c9151ded",
 		// 	spanID:  "c3ba1a6560ca0c48",
 		// 	sampled: true,
 		// },
-		{
-			input:   "9BQdXcDJNdAAAAAAAAAAADKk2yD11ZLnAAAAAAAAAAYAAAAAAAAAAQ==",
-			traceID: "411d1802c9151ded2b5189ffa013ad73",
-			spanID:  "c3ba1a6560ca0c48",
-			sampled: true,
-		},
+		// {
+		// 	input:   "9BQdXcDJNdAAAAAAAAAAADKk2yD11ZLnAAAAAAAAAAYAAAAAAAAAAQ==",
+		// 	traceID: "411d1802c9151ded2b5189ffa013ad73",
+		// 	spanID:  "c3ba1a6560ca0c48",
+		// 	sampled: true,
+		// },
 	}
 	for _, tt := range tests {
 		tt := tt
@@ -83,12 +101,12 @@ func TestPropagator_Inject(t *testing.T) {
 		spanID  string
 		sampled trace.TraceFlags
 	}{
-		{
-			want:    "w7oaZWDKDEgrUYn/oBOtc0EdGALJFR3tAAAAAAAAAAY=",
-			traceID: "0000000000000000411d1802c9151ded",
-			spanID:  "c3ba1a6560ca0c48",
-			sampled: trace.FlagsSampled,
-		},
+		// {
+		// 	want:    "w7oaZWDKDEgrUYn/oBOtc0EdGALJFR3tAAAAAAAAAAY=",
+		// 	traceID: "0000000000000000411d1802c9151ded",
+		// 	spanID:  "c3ba1a6560ca0c48",
+		// 	sampled: trace.FlagsSampled,
+		// },
 		// {
 		// 	want:    "9BQdXcDJNdAAAAAAAAAAADKk2yD11ZLnAAAAAAAAAAYAAAAAAAAAAQ==",
 		// 	traceID: "411d1802c9151ded2b5189ffa013ad73",

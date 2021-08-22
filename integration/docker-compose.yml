@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  zipkin:
+    image: ghcr.io/openzipkin/zipkin
+    environment:
+      - STRICT_TRACE_ID=false
+      - COLLECTOR_SCRIBE_ENABLED=true
+
+  zipkin-ui:
+    image: ghcr.io/openzipkin/zipkin-ui
+    environment:
+      - ZIPKIN_BASE_URL=http://zipkin:9411
+    ports:
+      - 8080:80
+    depends_on:
+      - zipkin
+
+  hello:
+    image: paddycarey/go-echo
+
+  l5d64:
+    image: buoyantio/linkerd:1.7.4
+    container_name: l5d-64
+    ports:
+    - "4140:4140"
+    - "9990:9990"
+    volumes:
+    - ./linkerd.yml:/io.buoyant/linkerd.yaml:ro
+    - ./disco:/io.buoyant/disco
+    command: >
+      -com.twitter.finagle.tracing.traceId128Bit='false' /io.buoyant/linkerd.yaml
+
+  l5d128:
+    image: buoyantio/linkerd:1.7.4
+    container_name: l5d-128
+    ports:
+    - "4141:4140"
+    - "9991:9990"
+    volumes:
+    - ./linkerd.yml:/io.buoyant/linkerd.yaml:ro
+    - ./disco:/io.buoyant/disco
+    command: >
+      -com.twitter.finagle.tracing.traceId128Bit='true' /io.buoyant/linkerd.yaml
