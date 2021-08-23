@@ -1,4 +1,4 @@
-# otel-linkerd
+# linkerd
 
 [OpenTelemetry](https://opentelemetry.io/) linkerd trace propagator.
 
